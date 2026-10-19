@@ -1,0 +1,51 @@
+{
+  "products": [
+    {
+      "id": "p-100",
+      "name": "wireless headphones",
+      "price": 89.99,
+      "currency": "USD",
+      "description": "Over-ear headphones with active noise cancelling and a 30-hour battery that easily lasts all week.",
+      "rating": 4.4,
+      "reviewCount": 312,
+      "onSale": true,
+      "badgeLabel": "Bestseller",
+      "seller": { "name": "AudioHub" }
+    },
+    {
+      "id": "p-101",
+      "name": "Desk Lamp",
+      "price": "24.50",
+      "currency": "USD",
+      "description": "LED lamp.",
+      "rating": 3.6,
+      "reviewCount": 41,
+      "onSale": false,
+      "badgeLabel": "",
+      "seller": null
+    },
+    {
+      "id": "p-102",
+      "name": "travel mug",
+      "price": 12,
+      "currency": "EURO",
+      "rating": 5,
+      "onSale": false
+    },
+    {
+      "id": "p-103",
+      "price": 0,
+      "currency": "EUR",
+      "description": "Gift card <limited> & \"special\"",
+      "rating": 0,
+      "reviewCount": 0
+    }
+  ],
+  "cart": {
+    "currency": "EUR",
+    "items": [
+      { "price": 89.99, "quantity": 1 },
+      { "price": 12, "quantity": 2 }
+    ]
+  }
+}

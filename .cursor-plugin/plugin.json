@@ -1,0 +1,12 @@
+{
+  "name": "humanize-code",
+  "description": "Rewrite AI-generated code so it reads like an experienced developer wrote it, without changing what it does.",
+  "version": "1.0.0",
+  "author": {
+    "name": "William C Francis"
+  },
+  "homepage": "https://github.com/williamcfrancis/humanize-code",
+  "repository": "https://github.com/williamcfrancis/humanize-code",
+  "license": "MIT",
+  "keywords": ["code-quality", "refactoring", "ai-slop", "deslop", "humanizer", "code-review", "clean-code"]
+}

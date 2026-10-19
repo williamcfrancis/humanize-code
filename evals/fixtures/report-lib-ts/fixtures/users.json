@@ -1,0 +1,7 @@
+[
+  { "id": "u1", "email": "ana@example.com", "nickname": "Ana", "active": true },
+  { "id": "u2", "email": "bo@example.com", "nickname": "", "active": false },
+  { "id": "u3", "email": "cy@example.com", "active": true },
+  { "id": "u4", "email": "di@example.com", "nickname": "Di", "active": false },
+  { "id": "u5", "email": "ed@example.com", "nickname": "Ed", "active": true }
+]

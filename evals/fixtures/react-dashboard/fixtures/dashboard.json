@@ -1,0 +1,15 @@
+{
+  "status": "ok",
+  "userName": "Priya",
+  "subscriptionStatus": "active",
+  "plan": { "name": "Pro" },
+  "stats": [
+    { "key": "revenue", "label": "Monthly revenue", "value": 48250, "format": "currency", "trend": "up" },
+    { "key": "conversion", "label": "Conversion rate", "value": 0.0342, "format": "percent", "trend": "down" },
+    { "key": "visitors", "label": "Visitors", "value": 128400 }
+  ],
+  "notifications": [
+    { "id": "n1", "message": "Invoice #1042 is ready", "read": false },
+    { "id": "n2", "message": "Your export finished", "read": true }
+  ]
+}

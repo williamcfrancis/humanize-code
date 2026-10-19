@@ -1,0 +1,17 @@
+usage: invoicer [-h] [--format {csv,json}] --output OUTPUT
+                [--discount DISCOUNT]
+                order_file
+
+Invoicer: generate invoices from order files.
+
+Reads an order JSON file, adds the standard handling fee, applies an optional
+discount, and writes the invoice in the requested format.
+
+positional arguments:
+  order_file           path to the order JSON file
+
+options:
+  -h, --help           show this help message and exit
+  --format {csv,json}  output format
+  --output OUTPUT      path of the invoice file to write
+  --discount DISCOUNT  discount percentage to apply

@@ -1,0 +1,2 @@
+✅ Invoice INV-2026-002 written to invoice.json
+📦 11 line items, total $2.00, 0 loyalty points

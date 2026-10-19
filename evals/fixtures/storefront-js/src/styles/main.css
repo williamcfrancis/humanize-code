@@ -1,0 +1,62 @@
+/* ==========================================
+   Main Stylesheet for Shop Preview
+   ========================================== */
+
+/* ===== Base Styles ===== */
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif; /* Use the system font stack for better performance */
+  color: #1a1a1a;
+}
+
+/* ===== Header Styles ===== */
+.site-header {
+  padding: 16px 24px; /* Comfortable padding around the header */
+  border-bottom: 1px solid #e5e5e5;
+}
+
+/* ===== Product Grid ===== */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); /* Responsive grid layout */
+  gap: 16px;
+  padding: 24px;
+}
+
+/* ===== Product Card ===== */
+.product-card {
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.product-card__badge {
+  font-size: 12px;
+  text-transform: uppercase; /* Make badge text uppercase for emphasis */
+}
+
+.product-card__sale {
+  color: #c62828;
+  font-weight: 600;
+}
+
+/* Product card button styles */
+.product-card__button {
+  width: 100%;
+  padding: 8px;
+}
+
+/* Override button styles for the product card - must come after the base button styles */
+.product-card .product-card__button {
+  background: #1a1a1a;
+  color: #fff;
+}
+
+/* ===== Cart Summary ===== */
+.cart-summary {
+  padding: 16px 24px;
+}
+
+.cart-summary--error {
+  color: #c62828; /* Red color to indicate an error */
+}

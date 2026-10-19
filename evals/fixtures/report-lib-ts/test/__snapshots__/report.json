@@ -1,0 +1,20 @@
+{
+  "summary": "{\"normalizedUserRecords\":[{\"id\":\"u1\",\"name\":\"Ana\"},{\"id\":\"u2\",\"name\":\"bo@example.com\"},{\"id\":\"u3\",\"name\":\"cy@example.com\"},{\"id\":\"u4\",\"name\":\"Di\"},{\"id\":\"u5\",\"name\":\"Ed\"}],\"totalUserCount\":5}",
+  "activeIds": [
+    "u1",
+    "u3",
+    "u5"
+  ],
+  "masks": [
+    31,
+    12,
+    0,
+    0,
+    16
+  ],
+  "csv": "# format=csv\n# count=5\nid,email,active\nu1,ana@example.com,true\nu2,bo@example.com,false\nu3,cy@example.com,true\nu4,di@example.com,false\nu5,ed@example.com,true",
+  "csvDebug": "# format=csv\n# count=5\n# debug=true\nid,email,active\nu1,ana@example.com,true\nu2,bo@example.com,false\nu3,cy@example.com,true\nu4,di@example.com,false\nu5,ed@example.com,true",
+  "json": "{\"metadata\":{\"format\":\"json\",\"count\":5},\"users\":[{\"id\":\"u1\",\"email\":\"ana@example.com\",\"nickname\":\"Ana\",\"active\":true},{\"id\":\"u2\",\"email\":\"bo@example.com\",\"nickname\":\"\",\"active\":false},{\"id\":\"u3\",\"email\":\"cy@example.com\",\"active\":true},{\"id\":\"u4\",\"email\":\"di@example.com\",\"nickname\":\"Di\",\"active\":false},{\"id\":\"u5\",\"email\":\"ed@example.com\",\"nickname\":\"Ed\",\"active\":true}]}",
+  "legacyCsv": "u1;ana@example.com\r\nu2;bo@example.com\r\nu3;cy@example.com\r\nu4;di@example.com\r\nu5;ed@example.com",
+  "unknownFormatError": "Unknown export format: xml"
+}

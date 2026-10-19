@@ -1,0 +1,5 @@
+{
+  "name": "humanize-code",
+  "version": "1.0.0",
+  "description": "Rewrite AI-generated code so it reads like an experienced developer wrote it, without changing what it does."
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "humanize-code"
+  short_description: "Make AI-written code read like a person wrote it"
+  default_prompt: "Use $humanize-code on the code changed in this branch. Keep behavior and the rendered UI exactly the same."

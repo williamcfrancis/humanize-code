@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "humanize-code",
+  "owner": {
+    "name": "William C Francis",
+    "url": "https://github.com/williamcfrancis"
+  },
+  "description": "Install humanize-code as a Claude plugin.",
+  "plugins": [
+    {
+      "name": "humanize-code",
+      "source": "./",
+      "description": "Rewrite AI-generated code so it reads like an experienced developer wrote it, without changing what it does.",
+      "license": "MIT",
+      "keywords": ["code-quality", "refactoring", "ai-slop", "deslop", "humanizer", "code-review", "clean-code"]
+    }
+  ]
+}

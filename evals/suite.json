@@ -1,0 +1,130 @@
+{
+  "fixtures": {
+    "storefront-js": {
+      "description": "Vanilla JS that renders HTML strings, plus CSS. Snapshot tests pin the page and the cart states.",
+      "setup": [],
+      "checks": [
+        { "name": "snapshot tests", "cmd": "node --test" },
+        { "name": "build", "cmd": "node build.mjs" }
+      ],
+      "artifacts": ["dist/index.html", "dist/main.css"],
+      "protected": ["test", "fixtures", "build.mjs", "package.json", ".gitignore"],
+      "sources": ["src"],
+      "mutations": [
+        { "id": "side-effect-import", "why": "home.js imports polyfills.js only for its side effect: it sets the locale every price uses.",
+          "edits": [{ "file": "src/pages/home.js", "find": "import '../polyfills.js';\n", "replace": "" }] },
+        { "id": "nullish-to-or", "why": "An empty badge label must stay empty; || would replace it with 'New'.",
+          "edits": [{ "file": "src/components/ProductCard.js", "find": "product.badgeLabel ?? 'New'", "replace": "product.badgeLabel || 'New'" }] },
+        { "id": "drop-type-guard", "why": "The API sends one price as a string; the typeof check is what renders 'Price unavailable'.",
+          "edits": [{ "file": "src/utils/formatters.js", "find": "typeof amount !== 'number' || ", "replace": "" }] },
+        { "id": "drop-return-await", "why": "Without await, a rejected getCart escapes the try and the error state never renders.",
+          "edits": [{ "file": "src/components/CartSummary.js", "find": "return await apiClient.getCart();", "replace": "return apiClient.getCart();" }] },
+        { "id": "and-in-template", "why": "In a template literal, ${false} renders the word 'false'.",
+          "edits": [{ "file": "src/components/ProductCard.js", "find": "${product.onSale ? '<span class=\"product-card__sale\">Sale</span>' : ''}", "replace": "${product.onSale && '<span class=\"product-card__sale\">Sale</span>'}" }] },
+        { "id": "drop-array-guard", "why": "The API can send items: null; the Array.isArray check renders the empty state instead of crashing.",
+          "edits": [{ "file": "src/components/CartSummary.js", "find": "Array.isArray(cartData.items) ? cartData.items : []", "replace": "cartData.items" }] },
+        { "id": "reindent-template", "why": "Whitespace inside an HTML template literal is part of the output.",
+          "edits": [{ "file": "src/components/ProductCard.js", "find": "\n  <h3 class=\"product-card__title\">", "replace": "\n    <h3 class=\"product-card__title\">" }] }
+      ]
+    },
+    "react-dashboard": {
+      "description": "React 19 + TypeScript components. SSR snapshots, a Tailwind class-scan test, and jsdom tests for effects and state.",
+      "setup": ["npm ci --no-audit --no-fund"],
+      "checks": [
+        { "name": "typecheck", "cmd": "npx tsc --noEmit" },
+        { "name": "tests", "cmd": "node --test --test-force-exit" }
+      ],
+      "artifacts": [],
+      "protected": ["test", "fixtures", "scripts", "package.json", "package-lock.json", "tsconfig.json", ".gitignore"],
+      "sources": ["src"],
+      "mutations": [
+        { "id": "and-zero", "why": "{count && ...} renders a stray 0 when count is 0.",
+          "edits": [{ "file": "src/components/NotificationBell.tsx", "find": "{unreadCount > 0 && (", "replace": "{unreadCount && (" }] },
+        { "id": "jsx-comment-between-text", "why": "Deleting a JSX comment that sits between two lines of text adds a space to the rendered sentence.",
+          "edits": [{ "file": "src/components/BillingNotice.tsx", "find": "        {/* TODO: show the exact renewal date from the billing API */}\n", "replace": "" }] },
+        { "id": "tailwind-dynamic-classes", "why": "Tailwind only generates classes spelled out in full in the source.",
+          "edits": [
+            { "file": "src/components/StatusBadge.tsx", "find": "  active: 'bg-green-100 text-green-800',\n  paused: 'bg-yellow-100 text-yellow-800',\n  cancelled: 'bg-red-100 text-red-800',", "replace": "  active: 'green',\n  paused: 'yellow',\n  cancelled: 'red'," },
+            { "file": "src/components/StatusBadge.tsx", "find": "font-medium ${badgeStyles}`", "replace": "font-medium bg-${badgeStyles}-100 text-${badgeStyles}-800`" }
+          ] },
+        { "id": "drop-usememo", "why": "The memoized query is an effect dependency; a fresh object each render refetches forever.",
+          "edits": [{ "file": "src/hooks/useDashboardData.ts", "find": "const statsQuery = useMemo<StatsQuery>(() => ({ userId, range }), [userId, range]);", "replace": "const statsQuery: StatsQuery = { userId, range };" }] },
+        { "id": "drop-ssr-guard", "why": "The typeof window check is what lets the component render on the server.",
+          "edits": [{ "file": "src/hooks/useLocalStorage.ts", "find": "    if (typeof window === 'undefined') {\n      return initialValue;\n    }\n", "replace": "" }] },
+        { "id": "drop-side-effect-import", "why": "registerFormatters is imported only for its side effect: it registers the number formatters.",
+          "edits": [{ "file": "src/App.tsx", "find": "import './registerFormatters';\n", "replace": "" }] },
+        { "id": "drop-return-await", "why": "Without await, a rejected request escapes the try and the error message never renders.",
+          "edits": [{ "file": "src/lib/api.ts", "find": "return await api.getStats(query);", "replace": "return api.getStats(query);" }] },
+        { "id": "jsx-reflow", "why": "Moving the span to its own line removes the space JSX renders between the value and the trend icon.",
+          "edits": [{ "file": "src/components/StatCard.tsx", "find": "{formattedValue} <span className=\"text-sm\">", "replace": "{formattedValue}\n        <span className=\"text-sm\">" }] },
+        { "id": "em-dash-in-ui", "why": "The em dash is UI text (the flat-trend icon), not prose to clean up.",
+          "edits": [{ "file": "src/components/StatCard.tsx", "find": "flat: '—',", "replace": "flat: '-'," }] },
+        { "id": "ui-emoji", "why": "Emoji in rendered copy is frontend, not a comment.",
+          "edits": [{ "file": "src/components/Dashboard.tsx", "find": "🎉 You're all caught up!", "replace": "You're all caught up!" }] }
+      ]
+    },
+    "report-lib-ts": {
+      "description": "A small TypeScript library plus CSS, with subtler traps. Tests pin every exported function's output; the build pins the CSS.",
+      "setup": ["npm ci --no-audit --no-fund"],
+      "checks": [
+        { "name": "typecheck", "cmd": "npx tsc --noEmit" },
+        { "name": "tests", "cmd": "node --test --test-force-exit" },
+        { "name": "build", "cmd": "node build.mjs" }
+      ],
+      "artifacts": ["dist/report.css"],
+      "protected": ["test", "fixtures", "build.mjs", "package.json", "package-lock.json", "tsconfig.json", ".gitignore"],
+      "sources": ["src"],
+      "mutations": [
+        { "id": "drop-instanceof-guard", "why": "Without the 'impossible' instanceof check, LegacyUser is unused, TypeScript drops the import, and legacyUser.ts never registers the legacy-csv serializer.",
+          "edits": [{ "file": "src/users.ts", "find": "  // Defensive check: the API no longer returns legacy user objects, but handle them just in case\n  if (user instanceof LegacyUser) {\n    return user.legacyDisplayName;\n  }\n\n", "replace": "" }] },
+        { "id": "ternary-to-nullish", "why": "a ? a : b falls back on every falsy value; a ?? b keeps an empty nickname.",
+          "edits": [{ "file": "src/users.ts", "find": "user.nickname ? user.nickname : user.email", "replace": "user.nickname ?? user.email" }] },
+        { "id": "shorthand-keys", "why": "Object shorthand turns the variable names into output keys, so shorter names change the JSON.",
+          "edits": [
+            { "file": "src/users.ts", "find": "return { normalizedUserRecords, totalUserCount };", "replace": "return { records: normalizedUserRecords, total: totalUserCount };" },
+            { "file": "src/types.ts", "find": "  normalizedUserRecords: NormalizedUserRecord[];", "replace": "  records: NormalizedUserRecord[];" },
+            { "file": "src/types.ts", "find": "  totalUserCount: number;", "replace": "  total: number;" }
+          ] },
+        { "id": "parseint-radix", "why": "parseInt without a radix reads 0x1F as hex; adding radix 10 returns 0.",
+          "edits": [{ "file": "src/flags.ts", "find": "parseInt(rawMaskValue)", "replace": "parseInt(rawMaskValue, 10)" }] },
+        { "id": "foreach-to-for-of", "why": "return inside a forEach callback skips one item; inside for...of it leaves the function.",
+          "edits": [
+            { "file": "src/filters.ts", "find": "  users.forEach((user) => {\n", "replace": "  for (const user of users) {\n" },
+            { "file": "src/filters.ts", "find": "    activeUserIds.push(user.id);\n  });\n", "replace": "    activeUserIds.push(user.id);\n  }\n" }
+          ] },
+        { "id": "conditional-spread", "why": "The spread adds the debug key only when it is on; debug: flag || undefined always adds the key.",
+          "edits": [{ "file": "src/exporter.ts", "find": "    ...(options.includeDebugInfo ? { debug: true } : {}),\n", "replace": "    debug: options.includeDebugInfo || undefined,\n" }] },
+        { "id": "css-fallback-declaration", "why": "display: flex before display: grid is a fallback, not a duplicate; the built CSS must not change.",
+          "edits": [{ "file": "src/styles/report.css", "find": "  display: flex;\n", "replace": "" }] },
+        { "id": "drop-side-effect-import", "why": "serializers.ts is imported only to register the csv and json serializers.",
+          "edits": [{ "file": "src/index.ts", "find": "import './serializers';\n", "replace": "" }] }
+      ]
+    },
+    "python-cli": {
+      "description": "Python 3.13 stdlib CLI. Tests pin --help, stdout, exit codes, and the files it writes.",
+      "setup": [],
+      "checks": [
+        { "name": "tests", "cmd": "{python} -m unittest discover -s tests" }
+      ],
+      "artifacts": [],
+      "protected": ["tests", "data", ".gitignore"],
+      "sources": ["invoicer"],
+      "mutations": [
+        { "id": "builtin-sum", "why": "Python 3.12+ sum() uses compensated float summation; ten 0.10 items total 1.0 instead of 0.9999999999999999, which changes the loyalty points.",
+          "edits": [{ "file": "invoicer/pricing.py", "find": "        running_subtotal: float = 0.0\n\n        # Iterate over each line item and accumulate unit_price * quantity\n        for line_item in line_items:\n            running_subtotal += line_item.unit_price * line_item.quantity\n", "replace": "        running_subtotal = sum(line_item.unit_price * line_item.quantity for line_item in line_items)\n" }] },
+        { "id": "truthy-discount", "why": "if discount_percentage: applies negative discounts that > 0 rejects.",
+          "edits": [{ "file": "invoicer/pricing.py", "find": "if discount_percentage is not None and discount_percentage > 0:", "replace": "if discount_percentage:" }] },
+        { "id": "pure-fees", "why": "+= on a list mutates the caller's list, and the printed item count depends on it.",
+          "edits": [{ "file": "invoicer/pricing.py", "find": "        all_line_items = line_items\n        all_line_items += DEFAULT_FEES\n", "replace": "        all_line_items = line_items + DEFAULT_FEES\n" }] },
+        { "id": "drop-registry-import", "why": "The exporters register themselves when imported; the import looks unused.",
+          "edits": [{ "file": "invoicer/exporters/__init__.py", "find": "from invoicer.exporters import csv_exporter, json_exporter  # noqa: F401\n", "replace": "" }] },
+        { "id": "trim-cli-docstring", "why": "argparse uses the module docstring as the --help description.",
+          "edits": [{ "file": "invoicer/cli.py", "find": "Reads an order JSON file, adds the standard handling fee, applies an optional\ndiscount, and writes the invoice in the requested format.\n", "replace": "" }] },
+        { "id": "rename-keyword-param", "why": "Callers pass discount_percentage= by keyword, so the parameter name is API.",
+          "edits": [{ "file": "invoicer/pricing.py", "find": "discount_percentage", "replace": "discount_pct", "all": true }] },
+        { "id": "cli-output-emoji", "why": "Lines printed to stdout are the CLI's user-facing output, not debug logs.",
+          "edits": [{ "file": "invoicer/cli.py", "find": "print(f\"✅ Invoice", "replace": "print(f\"Invoice" }] }
+      ]
+    }
+  }
+}

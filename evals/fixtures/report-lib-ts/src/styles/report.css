@@ -1,0 +1,24 @@
+/* ==========================================
+   Report Styles
+   ========================================== */
+
+/* ===== Report Layout ===== */
+.report {
+  min-height: 100vh;
+  min-height: 100dvh; /* Use the dynamic viewport height on mobile browsers */
+  padding: 24px;
+}
+
+/* ===== Summary Grid ===== */
+.report__grid {
+  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px; /* Spacing between the grid items */
+}
+
+/* ===== Table Styles ===== */
+.report__table th {
+  text-align: left;
+  font-weight: 600;
+}

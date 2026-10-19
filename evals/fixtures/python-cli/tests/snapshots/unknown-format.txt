@@ -1,0 +1,4 @@
+usage: invoicer [-h] [--format {csv,json}] --output OUTPUT
+                [--discount DISCOUNT]
+                order_file
+invoicer: error: argument --format: invalid choice: 'xml' (choose from 'csv', 'json')

@@ -1,0 +1,26 @@
+name: Over-edit
+description: The cleanup removed something a person would keep, or rewrote code that was fine.
+labels: ["bug"]
+body:
+  - type: textarea
+    id: removed
+    attributes:
+      label: What it removed or changed
+      description: Quote the comment, check, name, or structure, before and after.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it should stay
+      description: For example, the comment explained a workaround, the check guards outside data, or a lint rule requires the docstring.
+    validations:
+      required: true
+  - type: textarea
+    id: call
+    attributes:
+      label: How you called it
+      placeholder: "Codex, gpt-5: use $humanize-code on src/"
+    validations:
+      required: true

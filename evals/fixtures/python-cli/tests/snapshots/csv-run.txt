@@ -1,0 +1,2 @@
+✅ Invoice INV-2026-001 written to invoice.csv
+📦 4 line items, total $44.99, 480 loyalty points
